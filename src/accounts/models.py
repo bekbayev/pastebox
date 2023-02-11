@@ -1,3 +1,6 @@
-from django.db import models  # noqa: F401
+from django.contrib.auth.models import AbstractUser
 
-# Create your models here.
+
+# Django highly recommended to set up a custom user model
+class User(AbstractUser):
+    pass
