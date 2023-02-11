@@ -1,0 +1,27 @@
+[tool.poetry]
+name = "pastebox"
+version = "0.1.0"
+description = """\
+  Pastebox is a website where you can \
+  store any text online for easy sharing.\
+  """
+authors = ["Almas Bekbayev <almas.bekbayev@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "3.10.*"
+django = ">=3.2.0,<3.3.0"
+python-decouple = "3.7"
+
+
+[tool.poetry.group.dev.dependencies]
+psycopg2-binary = "2.9.5"
+black = "^23.1.0"
+flake8 = "^6.0.0"
+isort = "^5.12.0"
+flake8-isort = "^6.0.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
