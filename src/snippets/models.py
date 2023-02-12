@@ -11,15 +11,45 @@ class Snippet(models.Model):
     """
 
     DEFAULT_TITLE = "Untitled"
-    BODY_MAX_LENGTH = 65_536  # 256 KiB (utf-8) or less
+    BODY_MAX_LENGTH = 65_536  # limited to 256 KiB (utf-8)
     URL_LENGTH = 8
+    LANGUAGES = [
+        ("", "None"),
+        ("bash", "Bash"),
+        ("c", "C"),
+        ("cpp", "C++"),
+        ("csharp", "C#"),
+        ("css", "CSS"),
+        ("go", "Go"),
+        ("haskell", "Haskell"),
+        ("html", "HTML"),
+        ("java", "Java"),
+        ("js", "JavaScript"),
+        ("json", "JSON"),
+        ("lua", "Lua"),
+        ("md", "Markdown"),
+        ("mysql", "MySQL"),
+        ("objc", "Objective-C"),
+        ("perl", "Perl"),
+        ("php", "PHP"),
+        ("postgres", "PostgreSQL"),
+        ("python", "Python"),
+        ("ruby", "Ruby"),
+        ("rust", "Rust"),
+        ("smalltalk", "Smalltalk"),
+        ("sql", "SQL"),
+        ("swift", "Swift"),
+        ("toml", "TOML"),
+        ("ts", "TypeScript"),
+        ("yaml", "YAML"),
+    ]
 
     author = models.ForeignKey(
         User, on_delete=models.CASCADE, null=True, blank=True, related_name="snippets"
     )
     title = models.CharField(max_length=100, blank=True, default=DEFAULT_TITLE)
     body = models.CharField(max_length=BODY_MAX_LENGTH)
-    syntax = models.CharField(max_length=100, blank=True)
+    syntax = models.CharField(max_length=15, blank=True, choices=LANGUAGES)
     created_at = models.DateTimeField(auto_now_add=True)
     expiration = models.DateTimeField(null=True, blank=True)
     url = models.CharField(max_length=URL_LENGTH, unique=True, editable=False)
