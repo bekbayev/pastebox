@@ -33,6 +33,7 @@ INSTALLED_APPS = [
     "allauth.socialaccount",
     # Local
     "accounts.apps.AccountsConfig",
+    "snippets.apps.SnippetsConfig",
 ]
 
 MIDDLEWARE = [
