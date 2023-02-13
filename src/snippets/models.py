@@ -67,6 +67,10 @@ class Snippet(models.Model):
             title = f"{title}..."
         return title
 
+    def save(self, *args, **kwargs) -> None:
+        self.url = self.url or self._generate_unique_url()
+        return super().save(*args, **kwargs)
+
     def _generate_unique_url(self) -> str:
         """Return a random URL string, which isn't in the database.
 
