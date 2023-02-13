@@ -1,6 +1,8 @@
 from django.contrib.auth import get_user_model
 from django.db import models
 
+from .utils import make_random_string
+
 User = get_user_model()
 
 
@@ -56,3 +58,13 @@ class Snippet(models.Model):
 
     def __str__(self):
         return self.title
+
+    def _generate_unique_url(self) -> str:
+        """Return a random URL string, which isn't in the database.
+
+        Called recursively if the URL exists in the database.
+        """
+        url = make_random_string(self.URL_LENGTH)
+        if self.objects.filter(url=url).exists():
+            return self._generate_unique_url()
+        return url
