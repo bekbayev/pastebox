@@ -56,8 +56,14 @@ class Snippet(models.Model):
     expiration = models.DateTimeField(null=True, blank=True)
     url = models.CharField(max_length=URL_LENGTH, unique=True, editable=False)
 
-    def __str__(self):
-        return self.title
+    def __str__(self) -> str:
+        """Return the snippet title shortened to 30 characters."""
+        shorten_to = 30
+        title = self.title
+        if len(title) > shorten_to:
+            title = title[:shorten_to]
+            title = f"{title}..."
+        return title
 
     def _generate_unique_url(self) -> str:
         """Return a random URL string, which isn't in the database.
