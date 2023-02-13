@@ -16,6 +16,8 @@ class Snippet(models.Model):
     BODY_MAX_LENGTH = 65_536  # limited to 256 KiB (utf-8)
     URL_LENGTH = 8
     LANGUAGES = [
+        # The value of the first element of the tuple must be
+        # a short name from https://pygments.org/languages/
         ("", "None"),
         ("bash", "Bash"),
         ("c", "C"),
