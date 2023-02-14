@@ -59,8 +59,8 @@ class Snippet(models.Model):
     url = models.CharField(max_length=URL_LENGTH, unique=True, editable=False)
 
     def __str__(self) -> str:
-        """Return the snippet title shortened to 30 characters."""
-        shorten_to = 30
+        """Return the snippet title shortened to 50 characters."""
+        shorten_to = 50
         title = self.title
         if len(title) > shorten_to:
             title = title[:shorten_to]
