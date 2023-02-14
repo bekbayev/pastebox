@@ -1,5 +1,8 @@
 from datetime import timedelta
 
+from pygments.lexers import get_lexer_by_name
+from pygments.util import ClassNotFound
+
 from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.utils import timezone
@@ -70,3 +73,22 @@ class SnippetModelTest(TestCase):
 
         long_title = long_title[:max_title_length] + "..."
         self.assertEquals(str(snippet_long_title), long_title)
+
+    def test_only_available_languages_that_pygments_supports(self) -> None:
+        """
+        Snippet.LANGUAGES must contain a short name that pygmetns
+        supports: https://pygments.org/languages/
+        The short name must be the first element in each tuple.
+        Empty short name means no language support.
+        """
+        for language in Snippet.LANGUAGES:
+            short_name, long_name = language
+            try:
+                get_lexer_by_name(short_name)
+            except ClassNotFound:
+                if short_name == "":  # no language support
+                    continue
+                self.fail(
+                    f"Pygments does not support the alias`{short_name}` "
+                    f"for the `{long_name}` language."
+                )
