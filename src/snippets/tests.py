@@ -96,3 +96,10 @@ class SnippetModelTest(TestCase):
     def test_generate_unique_url_returns_url_that_is_8_chars_long(self):
         url = Snippet()._generate_unique_url()
         self.assertEquals(len(url), 8, "The url must be exactly 8 characters long")
+
+    def test_save_method_sets_the_url_if_not_given(self):
+        snippet = Snippet()
+        self.assertIs(snippet.url, "")
+        snippet.save()
+        self.assertIsInstance(snippet.url, str)
+        self.assertGreater(len(snippet.url), 0)
