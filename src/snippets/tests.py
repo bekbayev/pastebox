@@ -42,3 +42,11 @@ class SnippetModelTest(TestCase):
         Snippet.objects.create(body="default title")
         snippet = Snippet.objects.last()
         self.assertEquals(snippet.title, "Untitled")
+
+    def test_only_body_field_required_to_save_snippet(self) -> None:
+        """
+        To save the Snippet you only need to specify the body field.
+        """
+        Snippet.objects.create(body="Only body")
+        snippet = Snippet.objects.last()
+        self.assertEquals(snippet.body, "Only body")
