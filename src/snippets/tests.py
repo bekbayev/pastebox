@@ -92,3 +92,7 @@ class SnippetModelTest(TestCase):
                     f"Pygments does not support the alias`{short_name}` "
                     f"for the `{long_name}` language."
                 )
+
+    def test_generate_unique_url_returns_url_that_is_8_chars_long(self):
+        url = Snippet()._generate_unique_url()
+        self.assertEquals(len(url), 8, "The url must be exactly 8 characters long")
