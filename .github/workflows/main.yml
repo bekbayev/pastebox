@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
-      SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
+      DJANGO_SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
 
     services:
       postgres:
