@@ -103,3 +103,16 @@ class SnippetModelTest(TestCase):
         snippet.save()
         self.assertIsInstance(snippet.url, str)
         self.assertGreater(len(snippet.url), 0)
+
+    def test_generate_unique_url_returns_unique_url(self):
+        """
+        _generate_unique_url() always returns
+        a new url that is not in the database.
+        """
+        url = Snippet()._generate_unique_url()
+        # save the url to the database
+        Snippet.objects.create(body="1", url=url)
+        self.assertEquals(Snippet.objects.count(), 1)
+        # create a new url that is not in the database
+        new_url = Snippet()._generate_unique_url()
+        self.assertNotEquals(url, new_url)
