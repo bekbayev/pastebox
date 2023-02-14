@@ -50,3 +50,23 @@ class SnippetModelTest(TestCase):
         Snippet.objects.create(body="Only body")
         snippet = Snippet.objects.last()
         self.assertEquals(snippet.body, "Only body")
+
+    def test_string_representation(self) -> None:
+        """
+        __str__() method returns the title limited to 50 characters
+        and adds an ellipsis at the end if it exceeds 50 characters.
+        """
+        max_title_length = 50
+        short_title = "This title is less than 50 characters long."
+        medium_title = "This title has exactly 50 characters, doesn't it?!"
+        long_title = "And this title is definitely longer than 50 characters."
+
+        snippet_short_title = Snippet(title=short_title)
+        snippet_medium_title = Snippet(title=medium_title)
+        snippet_long_title = Snippet(title=long_title)
+
+        self.assertEqual(str(snippet_short_title), short_title)
+        self.assertEquals(str(snippet_medium_title), medium_title)
+
+        long_title = long_title[:max_title_length] + "..."
+        self.assertEquals(str(snippet_long_title), long_title)
