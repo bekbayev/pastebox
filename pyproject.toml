@@ -27,3 +27,9 @@ flake8-isort = "^6.0.0"
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.isort]
+profile = "black"
+src_paths = ["src"]
+known_django = "django"
+sections = ["FUTURE", "STDLIB", "THIRDPARTY", "DJANGO", "LOCALFOLDER"]
