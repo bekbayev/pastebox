@@ -77,6 +77,6 @@ class Snippet(models.Model):
         Called recursively if the URL exists in the database.
         """
         url = make_random_string(self.URL_LENGTH)
-        if self.objects.filter(url=url).exists():
+        if Snippet.objects.filter(url=url).exists():
             return self._generate_unique_url()
         return url
