@@ -33,3 +33,12 @@ class SnippetModelTest(TestCase):
         self.assertEquals(snippet.syntax, "python")
         self.assertEquals(snippet.expiration, expiration)
         self.assertEquals(snippet.url, "4pT5hi6s")
+
+    def test_default_title(self) -> None:
+        """
+        If the Snippet is saved without a title,
+        the default title will be used.
+        """
+        Snippet.objects.create(body="default title")
+        snippet = Snippet.objects.last()
+        self.assertEquals(snippet.title, "Untitled")
