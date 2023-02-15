@@ -1,4 +1,8 @@
-from django.urls import path  # noqa: F401
+from django.urls import path
+
+from .views import SnippetCreateView
 
 app_name = "snippets"
-urlpatterns = []
+urlpatterns = [
+    path("", SnippetCreateView.as_view(), name="index"),
+]
