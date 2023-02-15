@@ -1,5 +1,6 @@
 from datetime import timedelta
 
+from freezegun import freeze_time
 from pygments.lexers import get_lexer_by_name
 from pygments.util import ClassNotFound
 
@@ -93,18 +94,18 @@ class SnippetModelTest(TestCase):
                     f"for the `{long_name}` language."
                 )
 
-    def test_generate_unique_url_returns_url_that_is_8_chars_long(self):
+    def test_generate_unique_url_returns_url_that_is_8_chars_long(self) -> None:
         url = Snippet()._generate_unique_url()
         self.assertEquals(len(url), 8, "The url must be exactly 8 characters long")
 
-    def test_save_method_sets_the_url_if_not_given(self):
+    def test_save_method_sets_the_url_if_not_given(self) -> None:
         snippet = Snippet()
         self.assertIs(snippet.url, "")
         snippet.save()
         self.assertIsInstance(snippet.url, str)
         self.assertGreater(len(snippet.url), 0)
 
-    def test_generate_unique_url_returns_unique_url(self):
+    def test_generate_unique_url_returns_unique_url(self) -> None:
         """
         _generate_unique_url() always returns
         a new url that is not in the database.
@@ -116,3 +117,25 @@ class SnippetModelTest(TestCase):
         # create a new url that is not in the database
         new_url = Snippet()._generate_unique_url()
         self.assertNotEquals(url, new_url)
+
+    def test_inactive_snippets(self) -> None:
+        """InactiveSnippetManager returns only expired snippets."""
+        future_time = timezone.now() + timedelta(minutes=10)
+        Snippet.objects.create(expiration=future_time)
+        Snippet.objects.create()  # no expiration
+
+        self.assertEquals(Snippet.objects.count(), 2)
+        self.assertEquals(Snippet.inactive.count(), 0)
+        with freeze_time(future_time):  # going to the future
+            self.assertEquals(Snippet.inactive.count(), 1)
+
+    def test_active_snippets(self) -> None:
+        """ActiveSnippetManager returns only unexpired snippets."""
+        past_time = timezone.now() - timedelta(minutes=5)
+        Snippet.objects.create(expiration=past_time)
+        Snippet.objects.create()  # no expiration
+
+        self.assertEquals(Snippet.objects.count(), 2)
+        self.assertEquals(Snippet.active.count(), 1)
+        with freeze_time(past_time - timedelta(seconds=1)):  # going back in time
+            self.assertEquals(Snippet.active.count(), 2)
