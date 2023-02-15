@@ -1,9 +1,22 @@
 from django.contrib.auth import get_user_model
 from django.db import models
+from django.utils import timezone
 
 from .utils import make_random_string
 
 User = get_user_model()
+
+
+class InactiveSnippetManager(models.Manager):
+    def get_queryset(self):
+        """Return expired Snippets."""
+        return super().get_queryset().filter(expiration__lte=timezone.now())
+
+
+class ActiveSnippetManager(models.Manager):
+    def get_queryset(self):
+        """Return unexpired Snippets."""
+        return super().get_queryset().exclude(expiration__lte=timezone.now())
 
 
 class Snippet(models.Model):
@@ -57,6 +70,11 @@ class Snippet(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     expiration = models.DateTimeField(null=True, blank=True)
     url = models.CharField(max_length=URL_LENGTH, unique=True, editable=False)
+
+    # managers
+    objects = models.Manager()
+    inactive = InactiveSnippetManager()
+    active = ActiveSnippetManager()
 
     def __str__(self) -> str:
         """Return the snippet title shortened to 50 characters."""
