@@ -12,5 +12,5 @@ class SnippetCreateView(CreateView):
 
     def form_valid(self, form) -> HttpResponseRedirect:
         if self.request.user.is_authenticated:
-            form.instance.owner = self.request.user
+            form.instance.author = self.request.user
         return super().form_valid(form)
