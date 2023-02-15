@@ -15,10 +15,10 @@
       <a class="navbar-brand fw-bold" href="{% url 'snippets:index' %}">
         PASTEBOX <img src="{% static 'icons/box.svg' %}" alt="logo" width="20">
       </a>
-      {% if request.user.is_authenticated %}
+      {% if user.is_authenticated %}
         <div class="dropdown">
           <button class="btn btn-link text-dark dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-            {{ request.user }}
+            {{ user }}
           </button>
           <ul class="dropdown-menu dropdown-menu-end bg-light mt-2">
             {# TODO: Create profile view #}
