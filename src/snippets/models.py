@@ -1,5 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.db import models
+from django.db.models import QuerySet
 from django.utils import timezone
 
 from .utils import make_random_string
@@ -8,13 +9,13 @@ User = get_user_model()
 
 
 class InactiveSnippetManager(models.Manager):
-    def get_queryset(self):
+    def get_queryset(self) -> QuerySet:
         """Return expired Snippets."""
         return super().get_queryset().filter(expiration__lte=timezone.now())
 
 
 class ActiveSnippetManager(models.Manager):
-    def get_queryset(self):
+    def get_queryset(self) -> QuerySet:
         """Return unexpired Snippets."""
         return super().get_queryset().exclude(expiration__lte=timezone.now())
 
