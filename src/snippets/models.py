@@ -1,6 +1,7 @@
 from django.contrib.auth import get_user_model
 from django.db import models
 from django.db.models import QuerySet
+from django.urls import reverse
 from django.utils import timezone
 
 from .utils import make_random_string
@@ -89,6 +90,9 @@ class Snippet(models.Model):
     def save(self, *args, **kwargs) -> None:
         self.url = self.url or self._generate_unique_url()
         return super().save(*args, **kwargs)
+
+    def get_absolute_url(self) -> str:
+        return reverse("snippets:snippet_detail", kwargs={"url": self.url})
 
     def _generate_unique_url(self) -> str:
         """Return a random URL string, which isn't in the database.
