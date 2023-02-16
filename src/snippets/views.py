@@ -2,7 +2,9 @@ from crispy_forms.layout import Submit
 
 from django.http import HttpResponseRedirect
 from django.urls import reverse
+from django.views import View
 from django.views.generic import CreateView, DetailView, UpdateView
+from django.views.generic.edit import DeletionMixin
 
 from .forms import SnippetForm
 from .mixins import AuthorSnippetRequiredMixin
@@ -39,3 +41,8 @@ class SnippetUpdateView(AuthorSnippetRequiredMixin, UpdateView):
         # change submit button
         form.helper.layout[1][2] = Submit("edit", "Edit", css_class="btn btn-warning")
         return form
+
+
+class SnippetDeleteView(AuthorSnippetRequiredMixin, DeletionMixin, View):
+    def get_success_url(self):
+        return self.request.user.get_absolute_url()
