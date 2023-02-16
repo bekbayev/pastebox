@@ -22,9 +22,8 @@
             {{ user }}
           </button>
           <ul class="dropdown-menu dropdown-menu-end bg-light mt-2">
-            {# TODO: Create profile view #}
             <li>
-              <a class="dropdown-item" href="#">
+              <a class="dropdown-item" href="{{ user.get_absolute_url }}">
                 <img src="{% static 'icons/person.svg' %}" alt="profile" width="20">
                 Profile
               </a>
@@ -73,7 +72,7 @@
 
 <div class="container my-4"></div>
 <footer class="container-fluid bg-white mt-auto border-top shadow-sm">
-  <p class="text-center fw-bold my-3">&copy; 2023 All rights reserved.</p>
+  <p class="text-center fw-bold my-3">&copy; {% now 'Y' %} All rights reserved.</p>
 </footer>
 
 <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
