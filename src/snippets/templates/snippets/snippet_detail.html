@@ -38,8 +38,7 @@
     </div>
     {% if user.is_authenticated %}
       <div class="col-auto pe-0">
-      {# TODO: snippet edit view #}
-        <a class="btn btn-warning btn-sm" href="#" role="button">
+        <a class="btn btn-warning btn-sm" href="{% url 'snippets:snippet_edit' snippet.url %}" role="button">
           Edit
         </a>
       </div>
