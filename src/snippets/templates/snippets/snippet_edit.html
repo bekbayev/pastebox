@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% load crispy_forms_tags %}
+
+{% block title %}Edit: {{ snippet.title|truncatechars:30 }}{% endblock %}
+
+{% block content %}
+  <h1 class="fs-4">Editing the paste</h1>
+  {% crispy form %}
+{% endblock %}

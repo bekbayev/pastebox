@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% load static %}
+{% load snippets_filters %}
+
+{% if snippet.syntax %}
+  {% block extra_head %}
+    <link rel="stylesheet" href="{% static 'css/syntax_highlight.css' %}">
+  {% endblock %}
+{% endif %}
+
+{% block title %}{{ snippet.title|truncatechars:30 }}{% endblock %}
+
+{% block content %}
+  <h1 class="fs-3 text-break">{{ snippet.title|capfirst }}</h1>
+
+  <div class="row">
+    <div class="col">
+      <p class="text-muted">
+        {% if snippet.author %}
+          <span class="me-2">
+            <img src="{% static 'icons/person.svg' %}" alt="person" width="20">
+            <a href="{{ snippet.author.get_absolute_url }}">{{ snippet.author.username }}</a>
+          </span>
+        {% endif %}
+        <span class="me-2" title="Created at">
+          <img src="{% static 'icons/calendar.svg' %}" alt="calendar" width="20">
+          {{ snippet.created_at|date:'j M, Y' }}
+        </span>
+        <span title="Will be unavailable in">
+          <img src="{% static 'icons/stopwatch.svg' %}" alt="watch" width="20">
+          {% if snippet.expiration %}
+            {{ snippet.expiration|timeuntil }}
+          {% else %}
+            Never
+          {% endif %}
+        </span>
+      </p>
+    </div>
+    {% if user.is_authenticated %}
+      <div class="col-auto pe-0">
+        <a class="btn btn-warning btn-sm" href="{% url 'snippets:snippet_edit' snippet.url %}" role="button">
+          Edit
+        </a>
+      </div>
+      <div class="col-auto">
+      {# TODO: snippet delete view #}
+        <form action="#" method="post">
+          {% csrf_token %}
+          <button type="submit" class="btn btn-danger btn-sm">
+            Delete
+          </button>
+        </form>
+      </div>
+    {% endif %}
+  </div>
+
+  {% if snippet.syntax %}
+    <div class="card mb-4">
+      <div class="card-header bg-success p-2 bg-opacity-50">
+        Syntax: <span class="fw-bold">{{ snippet.syntax }}</span>
+      </div>
+      <div class="card-body bg-light table-responsive">
+        {{ snippet|highlight_code }}
+      </div>
+    </div>
+  {% endif %}
+
+  <div class="card">
+    <div class="card-header bg-warning p-2 text-dark bg-opacity-50">
+      Plain text
+    </div>
+    <div class="card-body bg-light">
+      <pre>{{ snippet.body }}</pre>
+    </div>
+  </div>
+{% endblock %}
