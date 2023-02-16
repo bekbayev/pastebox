@@ -1,7 +1,11 @@
+from crispy_forms.layout import Submit
+
 from django.http import HttpResponseRedirect
-from django.views.generic import CreateView, DetailView
+from django.urls import reverse
+from django.views.generic import CreateView, DetailView, UpdateView
 
 from .forms import SnippetForm
+from .mixins import AuthorSnippetRequiredMixin
 from .models import Snippet
 
 
@@ -21,3 +25,17 @@ class SnippetDetailView(DetailView):
     slug_field = "url"
     slug_url_kwarg = "url"
     context_object_name = "snippet"
+
+
+class SnippetUpdateView(AuthorSnippetRequiredMixin, UpdateView):
+    form_class = SnippetForm
+    template_name = "snippets/snippet_edit.html"
+
+    def get_form(self, form_class=None) -> SnippetForm:
+        form = super().get_form(form_class)
+        form.helper.form_action = reverse(
+            "snippets:snippet_edit", kwargs={"url": self.object.url}
+        )
+        # change submit button
+        form.helper.layout[1][2] = Submit("edit", "Edit", css_class="btn btn-warning")
+        return form
