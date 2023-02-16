@@ -32,14 +32,14 @@ class SnippetForm(forms.ModelForm):
             "syntax": "Syntax highlighting",
         }
 
-    @property
-    def helper(self) -> FormHelper:
-        helper = FormHelper()
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
         self.fields["title"].initial = ""  # set html attr: value
-        helper.form_method = "POST"
-        helper.form_action = reverse("snippets:index")
-        helper.form_class = "row"
-        helper.layout = Layout(
+        self.helper.form_method = "POST"
+        self.helper.form_action = reverse("snippets:index")
+        self.helper.form_class = "row"
+        self.helper.layout = Layout(
             Div("body", css_class="col-8"),
             Div(
                 Div(Div("title", css_class="col"), css_class="row"),
@@ -52,7 +52,6 @@ class SnippetForm(forms.ModelForm):
                 css_class="col-4",
             ),
         )
-        return helper
 
     def clean_expiration(self) -> timezone.datetime | None:
         """Returns datetime object with time limit otherwise None.
