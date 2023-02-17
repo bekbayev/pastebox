@@ -56,3 +56,18 @@ class SnippetCreateViewTest(TestCase):
         response = self.client.post(self.main_page)
         self.assertEquals(response.status_code, HTTPStatus.OK)
         self.assertEquals(Snippet.objects.count(), 0)
+
+
+class SnippetDetailViewTest(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        cls.snippet = Snippet.objects.create(body="1")
+
+    def test_uses_template(self):
+        response = self.client.get(self.snippet.get_absolute_url())
+        self.assertEquals(response.status_code, HTTPStatus.OK)
+        self.assertTemplateUsed(response, "snippets/snippet_detail.html")
+
+    def test_snippet_in_context(self):
+        response = self.client.get(self.snippet.get_absolute_url())
+        self.assertEqual(response.context["snippet"], self.snippet)
