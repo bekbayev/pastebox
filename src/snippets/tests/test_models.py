@@ -1,11 +1,11 @@
 from datetime import timedelta
 
-from django.core.exceptions import ValidationError
 from freezegun import freeze_time
 from pygments.lexers import get_lexer_by_name
 from pygments.util import ClassNotFound
 
 from django.contrib.auth import get_user_model
+from django.core.exceptions import ValidationError
 from django.test import TestCase
 from django.utils import timezone
 
