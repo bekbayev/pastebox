@@ -22,9 +22,8 @@
             {{ user }}
           </button>
           <ul class="dropdown-menu dropdown-menu-end bg-light mt-2">
-            {# TODO: Create profile view #}
             <li>
-              <a class="dropdown-item" href="#">
+              <a class="dropdown-item" href="{{ user.get_absolute_url }}">
                 <img src="{% static 'icons/person.svg' %}" alt="profile" width="20">
                 Profile
               </a>
@@ -67,13 +66,24 @@
 </header>
 
 <div class="container border border-top-0 bg-white py-3 shadow-sm">
+  {% if messages %}
+    <div class="row px-3">
+      {% for message in messages %}
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+          {{ message }}
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+
   {% block content %}
   {% endblock %}
 </div>
 
 <div class="container my-4"></div>
 <footer class="container-fluid bg-white mt-auto border-top shadow-sm">
-  <p class="text-center fw-bold my-3">&copy; 2023 All rights reserved.</p>
+  <p class="text-center fw-bold my-3">&copy; {% now 'Y' %} All rights reserved.</p>
 </footer>
 
 <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
