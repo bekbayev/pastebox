@@ -43,8 +43,7 @@
         </a>
       </div>
       <div class="col-auto">
-      {# TODO: snippet delete view #}
-        <form action="#" method="post">
+        <form action="{% url 'snippets:snippet_delete' snippet.url %}" method="post">
           {% csrf_token %}
           <button type="submit" class="btn btn-danger btn-sm">
             Delete
