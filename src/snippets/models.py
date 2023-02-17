@@ -91,6 +91,7 @@ class Snippet(models.Model):
         return title
 
     def save(self, *args, **kwargs) -> None:
+        self.title = self.title or self.DEFAULT_TITLE
         self.url = self.url or self._generate_unique_url()
         return super().save(*args, **kwargs)
 
