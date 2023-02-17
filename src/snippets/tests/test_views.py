@@ -108,3 +108,33 @@ class SnippetDeleteViewTest(TestCase):
         self.client.force_login(self.snippet_author)
         response = self.client.post(self.snippet_delete_url)
         self.assertRedirects(response, self.snippet_author.get_absolute_url())
+
+
+class SnippetUpdateViewTest(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        cls.snippet_author = User.objects.create(username="testuser")
+        cls.snippet = Snippet.objects.create(author=cls.snippet_author, body="321")
+        cls.snippet_edit_url = reverse(
+            "snippets:snippet_edit", kwargs={"url": cls.snippet.url}
+        )
+
+    def test_uses_template(self):
+        self.client.force_login(self.snippet_author)
+        response = self.client.get(self.snippet_edit_url)
+        self.assertTemplateUsed(response, "snippets/snippet_edit.html")
+
+    def test_uses_form(self):
+        self.client.force_login(self.snippet_author)
+        response = self.client.get(self.snippet_edit_url)
+        self.assertIsInstance(response.context["form"], SnippetForm)
+
+    def test_saves_changes_after_edit(self):
+        self.client.force_login(self.snippet_author)
+        payload = {"title": "Fiz", "body": "Buz", "syntax": "python"}
+        response = self.client.post(self.snippet_edit_url, data=payload)
+        self.assertEquals(response.status_code, HTTPStatus.FOUND)
+        self.snippet.refresh_from_db()
+        self.assertEquals(self.snippet.title, "Fiz")
+        self.assertEquals(self.snippet.body, "Buz")
+        self.assertEquals(self.snippet.syntax, "python")
