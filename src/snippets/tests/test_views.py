@@ -71,3 +71,40 @@ class SnippetDetailViewTest(TestCase):
     def test_snippet_in_context(self):
         response = self.client.get(self.snippet.get_absolute_url())
         self.assertEqual(response.context["snippet"], self.snippet)
+
+
+class SnippetDeleteViewTest(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        cls.snippet_author = User.objects.create(username="testuser")
+        cls.snippet = Snippet.objects.create(
+            author=cls.snippet_author, body="Some text."
+        )
+        cls.snippet_delete_url = reverse(
+            "snippets:snippet_delete", kwargs={"url": cls.snippet.url}
+        )
+
+    def test_not_authenticated_user_cannot_delete_snippet(self):
+        response = self.client.post(self.snippet_delete_url)
+        self.assertEquals(response.status_code, HTTPStatus.FOUND)
+        self.assertEquals(Snippet.objects.count(), 1)
+
+    def test_author_of_snippet_can_delete_it(self):
+        self.client.force_login(self.snippet_author)
+        response = self.client.post(self.snippet_delete_url)
+        self.assertEquals(response.status_code, HTTPStatus.FOUND)
+        self.assertEquals(Snippet.objects.count(), 0)
+
+    def test_only_author_can_delete_his_snippet(self):
+        non_author_user = User.objects.create(username="python")
+        self.assertNotEquals(self.snippet.author, non_author_user)
+        self.client.force_login(non_author_user)
+
+        response = self.client.post(self.snippet_delete_url)
+        self.assertEquals(response.status_code, HTTPStatus.FORBIDDEN)
+        self.assertEqual(Snippet.objects.count(), 1)
+
+    def test_redirects_to_profile_after_delete(self):
+        self.client.force_login(self.snippet_author)
+        response = self.client.post(self.snippet_delete_url)
+        self.assertRedirects(response, self.snippet_author.get_absolute_url())
