@@ -66,6 +66,17 @@
 </header>
 
 <div class="container border border-top-0 bg-white py-3 shadow-sm">
+  {% if messages %}
+    <div class="row px-3">
+      {% for message in messages %}
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+          {{ message }}
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+
   {% block content %}
   {% endblock %}
 </div>
