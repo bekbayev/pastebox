@@ -41,10 +41,10 @@ class SnippetModelTest(TestCase):
 
     def test_default_title(self) -> None:
         """
-        If the Snippet is saved without a title,
+        If the Snippet is saved with an empty title,
         the default title will be used.
         """
-        Snippet.objects.create(body="default title")
+        Snippet.objects.create(title="", body="default title")
         snippet = Snippet.objects.last()
         self.assertEquals(snippet.title, "Untitled")
 
