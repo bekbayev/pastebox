@@ -33,6 +33,7 @@ INSTALLED_APPS = [
     "allauth.socialaccount",
     "crispy_forms",
     "crispy_bootstrap5",
+    "django_celery_beat",
     # Local
     "accounts.apps.AccountsConfig",
     "snippets.apps.SnippetsConfig",
@@ -152,3 +153,13 @@ ACCOUNT_PRESERVE_USERNAME_CASING = False
 # https://django-crispy-forms.readthedocs.io/en/latest/index.html
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 CRISPY_TEMPLATE_PACK = "bootstrap5"
+
+# Celery settings
+# https://docs.celeryproject.org/en/master/userguide/configuration.html
+CELERY_BROKER_URL = "amqp://guest:guest@localhost"
+CELERY_BEAT_SCHEDULE = {
+    "delete-expired-snippets-every-10-min": {
+        "task": "snippets.tasks.delete_expired_snippets",
+        "schedule": 60 * 10,  # 10 minutes
+    },
+}

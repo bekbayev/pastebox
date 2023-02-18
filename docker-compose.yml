@@ -9,5 +9,11 @@ services:
     env_file:
       - .env
 
+  rabbitmq:
+    image: rabbitmq:3.11-alpine
+    restart: always
+    ports:
+      - "5672:5672"
+
 volumes:
   postgres_data:

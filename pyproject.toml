@@ -17,6 +17,8 @@ django-allauth = "0.52.0"
 pygments = ">=2.14.0,<2.15.0"
 django-crispy-forms = ">=2.0.0,<3.0.0"
 crispy-bootstrap5 = "0.7"
+celery = ">=5.2.0,<5.3.0"
+django-celery-beat = ">=2.4.0,<2.5.0"
 
 
 [tool.poetry.group.dev.dependencies]
