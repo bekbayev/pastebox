@@ -1,3 +1,9 @@
-from django.contrib import admin  # noqa: F401
+from django.contrib import admin
 
-# Register your models here.
+from .models import Snippet
+
+
+@admin.register(Snippet)
+class SnippetAdmin(admin.ModelAdmin):
+    list_display = ("author", "title", "created_at", "expiration", "syntax")
+    list_display_links = ("title",)

@@ -78,6 +78,9 @@ class Snippet(models.Model):
     inactive = InactiveSnippetManager()
     active = ActiveSnippetManager()
 
+    class Meta:
+        ordering = ("-created_at",)
+
     def __str__(self) -> str:
         """Return the snippet title shortened to 50 characters."""
         shorten_to = 50
@@ -88,6 +91,7 @@ class Snippet(models.Model):
         return title
 
     def save(self, *args, **kwargs) -> None:
+        self.title = self.title or self.DEFAULT_TITLE
         self.url = self.url or self._generate_unique_url()
         return super().save(*args, **kwargs)
 

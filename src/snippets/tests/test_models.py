@@ -5,6 +5,7 @@ from pygments.lexers import get_lexer_by_name
 from pygments.util import ClassNotFound
 
 from django.contrib.auth import get_user_model
+from django.core.exceptions import ValidationError
 from django.test import TestCase
 from django.utils import timezone
 
@@ -40,10 +41,10 @@ class SnippetModelTest(TestCase):
 
     def test_default_title(self) -> None:
         """
-        If the Snippet is saved without a title,
+        If the Snippet is saved with an empty title,
         the default title will be used.
         """
-        Snippet.objects.create(body="default title")
+        Snippet.objects.create(title="", body="default title")
         snippet = Snippet.objects.last()
         self.assertEquals(snippet.title, "Untitled")
 
@@ -51,9 +52,25 @@ class SnippetModelTest(TestCase):
         """
         To save the Snippet you only need to specify the body field.
         """
-        Snippet.objects.create(body="Only body")
-        snippet = Snippet.objects.last()
-        self.assertEquals(snippet.body, "Only body")
+        empty_snippet = Snippet()
+        with self.assertRaises(ValidationError):
+            # Note that full_clean() will not be called automatically
+            # when you call your model’s save() method. You’ll need to
+            # call it manually when you want to run one-step model
+            # validation for your own manually created models.
+            # https://docs.djangoproject.com/en/3.2/ref/models/instances/#validating-objects
+            empty_snippet.full_clean()
+            empty_snippet.save()  # won't save if ValidationError raised
+
+        self.assertEquals(Snippet.objects.count(), 0)
+
+        snippet_with_only_body_field = Snippet(body="Only body")
+        snippet_with_only_body_field.full_clean()
+        snippet_with_only_body_field.save()
+
+        self.assertEquals(Snippet.objects.count(), 1)
+        snippet_with_only_body_field.refresh_from_db()
+        self.assertEquals(snippet_with_only_body_field.body, "Only body")
 
     def test_string_representation(self) -> None:
         """
