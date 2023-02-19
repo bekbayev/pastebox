@@ -21,13 +21,27 @@ celery = ">=5.2.0,<5.3.0"
 django-celery-beat = ">=2.4.0,<2.5.0"
 
 
+[tool.poetry.group.dev]
+optional = true
+
 [tool.poetry.group.dev.dependencies]
-psycopg2-binary = "2.9.5"
+psycopg2-binary = "2.9.5"  # only for development and testing
 black = "^23.1.0"
 flake8 = "^6.0.0"
 isort = "^5.12.0"
 flake8-isort = "^6.0.0"
+
+
+[tool.poetry.group.test.dependencies]
 freezegun = "1.2.2"
+
+
+[tool.poetry.group.psycopg2-production]
+optional = true
+
+[tool.poetry.group.psycopg2-production.dependencies]
+psycopg2 = "2.9.5"
+
 
 [build-system]
 requires = ["poetry-core"]
