@@ -56,7 +56,7 @@
   {% if snippet.syntax %}
     <div class="card mb-4">
       <div class="card-header bg-success p-2 bg-opacity-50">
-        Syntax: <span class="fw-bold">{{ snippet.syntax }}</span>
+        Syntax: <span class="fw-bold">{{ snippet.get_syntax_display }}</span>
       </div>
       <div class="card-body bg-light table-responsive">
         {{ snippet|highlight_code }}
