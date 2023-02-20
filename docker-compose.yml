@@ -1,19 +1,49 @@
 services:
-  db:
+  postgres:
     image: postgres:14-alpine
     restart: always
-    ports:
-      - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data/
     env_file:
       - .env
 
+  django:
+    build: .
+    restart: always
+    command: ["gunicorn", "config.wsgi", "-b", "0:8000", "--workers", "2"]
+    volumes:
+      - django_staticfiles:/app/src/staticfiles/
+    env_file:
+      - .env
+    depends_on:
+      - postgres
+      - rabbitmq
+
   rabbitmq:
     image: rabbitmq:3.11-alpine
     restart: always
+
+  celery:
+    build: .
+    command: celery -A config worker -B -l INFO
+    env_file:
+      - .env
+    restart: always
+    depends_on:
+      - postgres
+      - rabbitmq
+
+  nginx:
+    image: nginx:alpine
+    restart: always
+    volumes:
+      - django_staticfiles:/home/app/web/staticfiles/
+      - ./nginx:/etc/nginx/conf.d
     ports:
-      - "5672:5672"
+      - "80:80"
+    depends_on:
+      - django
 
 volumes:
   postgres_data:
+  django_staticfiles:
