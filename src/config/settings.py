@@ -76,7 +76,7 @@ DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
         "NAME": "postgres",
-        "HOST": "localhost",
+        "HOST": "postgres",
         "USER": "postgres",
         "PASSWORD": config("POSTGRES_PASSWORD"),
         "PORT": 5432,
@@ -156,7 +156,7 @@ CRISPY_TEMPLATE_PACK = "bootstrap5"
 
 # Celery settings
 # https://docs.celeryproject.org/en/master/userguide/configuration.html
-CELERY_BROKER_URL = "amqp://guest:guest@localhost"
+CELERY_BROKER_URL = "amqp://guest:guest@rabbitmq"
 CELERY_BEAT_SCHEDULE = {
     "delete-expired-snippets-every-10-min": {
         "task": "snippets.tasks.delete_expired_snippets",
