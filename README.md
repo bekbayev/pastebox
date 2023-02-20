@@ -12,8 +12,8 @@
 Pastebox is a website where you can store any text online for easy sharing.
 The Website is mostly used programmers to store snippets of source code or
 configuration information, but anyone can insert any text, choose the
-expiration date and syntax highlighting.The idea for the project was
-[Pastebin.com](https://pastebin.com/)
+expiration date and syntax highlighting. The idea for the project was
+[Pastebin.com](https://pastebin.com/).
 
 ![pastebox_example_1](https://user-images.githubusercontent.com/121730304/220012614-ae52d07f-d1b8-49f2-8bb0-ed0def8d4b26.png)
 ![pastebox_example_2](https://user-images.githubusercontent.com/121730304/220012672-11940b66-dfa4-4e76-8e4e-9bf0109a6eb5.png)
