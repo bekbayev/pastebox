@@ -115,3 +115,17 @@ After that, you can go to the administration site `/admin/` and manage it.
 *Note*: By default registration does not require mail confirmation,
 but you can configure this behavior in `src/config/settings.py` file,
 there are links to configure it in the comments.
+
+## Thanks
+Thanks to JetBrains for providing me with an Open Source development license!
+
+JetBrains supports non-commercial
+[open source](https://www.jetbrains.com/community/opensource/#support) projects
+by providing core project contributors with a set of best-in-class developer
+tools free of charge.
+
+<p align="center">
+<img src="https://resources.jetbrains.com/storage/products/company/brand/logos/jb_beam.png" alt="JetBrains logo" width="250">
+</p>
+
+
